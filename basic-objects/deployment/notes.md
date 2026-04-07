@@ -49,6 +49,65 @@ kubectl apply -f deploy.yaml
 - `kubectl apply -f deploy.yaml`
   YAML 파일 기준으로 Deployment를 생성하거나 수정한다.
 
+예제 YAML:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25
+        ports:
+        - containerPort: 80
+```
+
+- Pod에서는 컨테이너 정의만 보면 됐지만, Deployment에서는 `selector`, `template`, `replicas`를 함께 본다.
+- `selector.matchLabels`와 `template.metadata.labels`는 반드시 맞아야 한다.
+- `replicas`를 조정하면 Deployment가 원하는 개수만큼 Pod를 유지한다.
+
+## Rolling Update
+
+롤링 업데이트는 기존 Pod를 한 번에 모두 바꾸지 않고, 새 버전 Pod로 조금씩 순차 교체하는 방식이다.
+서비스 중단 가능성을 줄이기 위해 Deployment에서 기본적으로 자주 사용하는 배포 전략이다.
+
+흐름:
+
+1. Deployment 이미지나 Pod 템플릿을 변경한다.
+2. 새 ReplicaSet이 만들어진다.
+3. 새 Pod가 조금씩 올라온다.
+4. 기존 Pod가 조금씩 내려간다.
+5. 최종적으로 모든 Pod가 새 버전으로 바뀐다.
+
+관련 명령:
+
+```bash
+kubectl set image deployment/web nginx=nginx:1.26
+kubectl rollout status deployment/web
+kubectl rollout history deployment/web
+kubectl rollout undo deployment/web
+```
+
+- `kubectl set image deployment/web nginx=nginx:1.26`
+  Deployment의 컨테이너 이미지를 바꿔 롤링 업데이트를 시작한다.
+- `kubectl rollout status deployment/web`
+  업데이트 진행 상태가 정상인지 확인한다.
+- `kubectl rollout history deployment/web`
+  어떤 버전 변경이 있었는지 revision 이력을 확인한다.
+- `kubectl rollout undo deployment/web`
+  업데이트에 문제가 있으면 이전 버전으로 롤백한다.
+
 ## Checkpoints
 
 - Deployment와 Pod의 관계를 설명할 수 있는가

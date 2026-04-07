@@ -27,3 +27,11 @@ Deployment `web`의 이미지를 `nginx:1.26`으로 변경하라.
 ## Problem 7
 
 `kubectl create deployment ... --dry-run=client -o yaml` 방식으로 `api` Deployment YAML을 만들고 적용하라.
+
+## Problem 8
+
+Deployment `web`이 관리하는 Pod 목록을 라벨 셀렉터로 조회하라.
+
+## Problem 9
+
+Deployment `web`의 이미지를 존재하지 않는 태그로 바꿔 롤아웃 실패를 재현하고, 원인을 확인한 뒤 정상 태그로 복구하라.

@@ -51,3 +51,33 @@ kubectl apply -f pod.yaml
 - `get`, `describe`, `logs`, `delete`를 빠르게 쓸 수 있는가
 - YAML로 만든 Pod를 수정해 다시 적용할 수 있는가
 - 실패한 Pod 상태를 보고 원인을 찾을 수 있는가
+
+## Next Step
+
+Pod를 직접 다룰 수 있게 되면 다음은 Deployment로 넘어가는 것이 맞다.
+운영 환경에서는 개별 Pod보다 Deployment로 Pod 개수 유지, 이미지 업데이트, 롤백을 관리하는 경우가 훨씬 많다.
+
+## Pod vs ReplicaSet vs Deployment
+
+- Pod는 컨테이너를 실행하는 가장 작은 단위다.
+- ReplicaSet은 원하는 개수의 Pod가 계속 유지되도록 맞춘다.
+- Deployment는 ReplicaSet을 관리하면서 스케일링, 이미지 변경, 롤링 업데이트, 롤백까지 담당한다.
+
+관계:
+
+`Deployment -> ReplicaSet -> Pod`
+
+시험 기준으로는 아래처럼 구분하면 된다.
+
+- Pod
+  단일 컨테이너 테스트, 로그 확인, 장애 분석에 자주 쓴다.
+- ReplicaSet
+  Pod 개수 유지 개념을 이해할 때 중요하지만 직접 만들 일은 많지 않다.
+- Deployment
+  실제 운영 워크로드와 CKA 실습에서 가장 자주 다루는 리소스다.
+
+한 줄 요약:
+
+- Pod는 실행 단위
+- ReplicaSet은 개수 유지
+- Deployment는 운영 관리
